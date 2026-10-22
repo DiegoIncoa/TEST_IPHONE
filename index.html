@@ -2,120 +2,131 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mis Pelis">
+<meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#0d0d12">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Mis Pelis</title>
 <style>
-:root{--bg:#0d0d12;--card:#1a1a22;--card2:#24242e;--tx:#f2f2f5;--mu:#9a9aa8;--ac:#f5b301;--ok:#34c759;--run:#0a84ff;--no:#8e8e93;--red:#ff453a}
+:root{
+  --bg:#0d0d12;--card:#1c1c24;--card2:#2a2a34;--line:#2c2c36;--tx:#f2f2f7;--mu:#8e8e9a;
+  --ac:#f5b301;--ok:#30d158;--run:#0a84ff;--red:#ff453a;
+  --st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom);--sl:env(safe-area-inset-left);--sr:env(safe-area-inset-right);
+}
+[hidden]{display:none!important}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif}
-body{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-input,textarea,select{font:inherit;font-size:16px;color:var(--tx);background:var(--card2);border:1px solid #33333f;border-radius:10px;padding:10px 12px;width:100%}
-textarea{resize:vertical}
-header{position:sticky;top:0;z-index:5;background:rgba(13,13,18,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:calc(env(safe-area-inset-top) + 10px) 16px 10px}
-.top{display:flex;align-items:center;justify-content:space-between}
-h1{font-size:28px;margin:0}
-.ico{width:38px;height:38px;border-radius:50%;background:var(--card2);font-size:18px}
-.bar{display:flex;gap:8px;margin-top:10px}
-.bar input{flex:1;padding:8px 12px}
-.bar select{width:auto;padding:8px}
-.tabs{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
-.tab{white-space:nowrap;padding:6px 12px;border-radius:999px;background:var(--card);color:var(--mu);font-size:14px}
-.tab b{font-weight:600;margin-left:4px;opacity:.7}
-.tab.on{background:var(--tx);color:#000}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:14px 10px;padding:12px 16px}
-.card{text-align:left;padding:0}
-.poster{position:relative;aspect-ratio:2/3;border-radius:10px;overflow:hidden;background:var(--card);display:flex;align-items:center;justify-content:center}
-.poster img{width:100%;height:100%;object-fit:cover}
-.poster span{padding:8px;font-size:13px;color:var(--mu);text-align:center}
-.st{position:absolute;left:5px;bottom:5px;font-style:normal;font-size:11px;font-weight:600;padding:2px 6px;border-radius:6px;color:#fff}
-.st.vista{background:var(--ok)}.st.en_curso{background:var(--run)}.st.no_vista{background:rgba(60,60,67,.85)}
-.nota{position:absolute;right:5px;top:5px;font-style:normal;font-size:12px;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(0,0,0,.75);color:var(--ac)}
-.t{font-size:13px;font-weight:600;margin-top:6px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.y{font-size:12px;color:var(--mu)}
-.empty{text-align:center;color:var(--mu);padding:60px 30px}
-.fab{position:fixed;right:20px;bottom:calc(24px + env(safe-area-inset-bottom));width:58px;height:58px;border-radius:50%;background:var(--ac);color:#000;font-size:32px;font-weight:300;box-shadow:0 6px 20px rgba(0,0,0,.5);z-index:6}
-.ov-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .25s;z-index:10}
-.ov-bg.on{opacity:1;pointer-events:auto}
-body.locked{position:fixed;left:0;right:0;overflow:hidden}
-.sheet{position:fixed;left:0;right:0;bottom:0;max-height:calc(var(--vh,100dvh) - env(safe-area-inset-top) - 12px);display:flex;flex-direction:column;background:#15151c;border-radius:16px 16px 0 0;transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);z-index:11;max-width:700px;margin:0 auto}
-.sheet.on{transform:none}
-.shead{position:relative;flex:none;padding:8px 16px 0;height:22px}
-#sbody{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 16px calc(24px + env(safe-area-inset-bottom))}
-.stick{position:sticky;top:0;background:#15151c;padding-bottom:4px;z-index:2}
-.grab{width:40px;height:5px;border-radius:3px;background:#444;margin:0 auto}
-.close{position:absolute;right:12px;top:8px;width:30px;height:30px;border-radius:50%;background:var(--card2);color:var(--mu);z-index:3}
-h2{font-size:20px;margin:6px 40px 10px 0}
-h3{font-size:16px;margin:22px 0 8px}
-.muted{color:var(--mu)}.small{font-size:13px;margin:2px 0}
-.res{margin-top:10px}
-.row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #26262f}
-.row .th{width:46px;height:69px;border-radius:6px;object-fit:cover;background:var(--card);flex:none}
-.row .info{flex:1;min-width:0}
-.row .info b{display:block;font-size:15px}
-.row .info span{font-size:13px;color:var(--mu)}
-.add{width:36px;height:36px;border-radius:50%;background:var(--ac);color:#000;font-size:20px;font-weight:600;flex:none}
-.add:disabled{background:var(--card2);color:var(--ok)}
-.hero{display:flex;gap:14px}
-.hero img{width:110px;border-radius:10px;align-self:flex-start;flex:none}
-.hero h2{margin-top:0}
-.links a{color:var(--ac);margin-right:14px;font-size:14px;font-weight:600;text-decoration:none}
-.seg{display:flex;background:var(--card2);border-radius:10px;padding:3px;margin:18px 0 6px}
-.seg button{flex:1;padding:8px 4px;border-radius:8px;font-size:14px;color:var(--mu)}
+html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;background:var(--bg);color:var(--tx);
+  font:17px/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;-webkit-text-size-adjust:100%;touch-action:manipulation}
+body{position:fixed;inset:0}
+button,.card,.row,.nav,.seg{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+img{-webkit-touch-callout:none;-webkit-user-drag:none;user-select:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer}
+button:active{opacity:.5}
+input,textarea,select{font:inherit;font-size:17px;color:var(--tx);background:var(--card);border:0;border-radius:10px;padding:9px 12px;width:100%;outline:none;-webkit-appearance:none;appearance:none}
+input::placeholder,textarea::placeholder{color:var(--mu)}
+input[type=search]::-webkit-search-decoration{-webkit-appearance:none}
+
+/* ---- pantallas apiladas tipo app nativa ---- */
+#app{position:fixed;left:0;right:0;top:0;height:100%;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);
+  transition:transform .4s cubic-bezier(.2,.85,.25,1),filter .4s;will-change:transform}
+.screen+.screen{box-shadow:-12px 0 32px rgba(0,0,0,.5)}
+.screen.right{transform:translateX(100%)}
+.screen.under{transform:translateX(-28%);filter:brightness(.55)}
+.screen.drag{transition:none}
+
+/* ---- barra de navegación ---- */
+.nav{flex:none;position:relative;z-index:2;padding:calc(var(--st) + 6px) calc(16px + var(--sr)) 10px calc(16px + var(--sl));
+  background:rgba(13,13,18,.92);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--line)}
+.navrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;min-height:40px;margin:0 -8px}
+.ttl{font-weight:600;max-width:46vw;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-align:center}
+.back{justify-self:start;display:flex;align-items:center;gap:5px;color:var(--ac);padding:6px 8px;max-width:32vw;white-space:nowrap;overflow:hidden}
+.back span{overflow:hidden;text-overflow:ellipsis}
+.navr{justify-self:end;display:flex;gap:10px;padding-right:8px}
+.big{display:flex;align-items:center;justify-content:space-between;min-height:48px}
+.big h1{font-size:32px;font-weight:700;margin:0;letter-spacing:.2px}
+.ibtn{width:36px;height:36px;border-radius:50%;background:var(--card);color:var(--ac);display:inline-flex;align-items:center;justify-content:center;font-size:19px}
+.frow{display:flex;gap:8px;margin-top:8px}
+.frow select{width:auto;flex:none;padding:9px 12px;color:var(--ac);font-size:15px}
+.seg{display:flex;background:var(--card);border-radius:9px;padding:2px;margin-top:10px}
+.seg button{flex:1;min-width:0;padding:7px 2px;border-radius:7px;font-size:13px;font-weight:500;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .2s}
+.seg button:active{opacity:1}
 .seg button.on{background:#3a3a46;color:var(--tx);font-weight:600}
-.lbl{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;color:var(--mu);margin:14px 0 6px}
-.lbl input{width:auto}
-.lbl[hidden]{display:none}
-.stars{display:flex;justify-content:space-between}
-.stars button{font-size:26px;color:#3a3a46;padding:0 1px;line-height:1}
+.seg small{font-size:11px;opacity:.65;margin-left:3px}
+
+/* ---- contenido desplazable ---- */
+.scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;
+  padding:0 calc(16px + var(--sr)) calc(var(--sb) + 30px) calc(16px + var(--sl))}
+body.kb .scroll{padding-bottom:16px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:18px 10px;padding-top:14px}
+.card{text-align:left;min-width:0}
+.card:active{opacity:.6}
+.poster{position:relative;aspect-ratio:2/3;border-radius:10px;overflow:hidden;background:var(--card);display:flex;align-items:center;justify-content:center}
+.poster img{width:100%;height:100%;object-fit:cover;display:block}
+.poster span{padding:8px;font-size:13px;color:var(--mu);text-align:center;overflow-wrap:anywhere}
+.st{position:absolute;left:5px;bottom:5px;font-style:normal;font-size:11px;font-weight:600;padding:2px 6px;border-radius:6px;color:#fff}
+.st.vista{background:var(--ok)}.st.en_curso{background:var(--run)}.st.no_vista{background:rgba(50,50,58,.88)}
+.nota{position:absolute;right:5px;top:5px;font-style:normal;font-size:12px;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(0,0,0,.72);color:var(--ac)}
+.t{font-size:13px;font-weight:600;margin-top:6px;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+.y{font-size:12px;color:var(--mu)}
+.empty{text-align:center;color:var(--mu);padding:70px 20px;font-size:15px}
+.empty .btn{max-width:260px;margin:20px auto 0}
+
+.row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:.5px solid var(--line);width:100%;text-align:left;min-width:0}
+.row:active{opacity:.6}
+.th{width:46px;height:69px;border-radius:6px;object-fit:cover;background:var(--card);flex:none;display:block}
+.info{flex:1;min-width:0}
+.info b{display:block;font-size:16px;font-weight:600;overflow-wrap:anywhere}
+.info span{display:block;font-size:13px;color:var(--mu);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.add{width:34px;height:34px;border-radius:50%;background:var(--ac);color:#000;font-size:20px;font-weight:600;flex:none;display:flex;align-items:center;justify-content:center}
+.add.have{background:var(--card2);color:var(--ok)}
+.muted{color:var(--mu)}.small{font-size:13px;margin:3px 0}
+.pad{padding-top:16px}
+
+.hero{display:flex;gap:14px;padding-top:16px}
+.hero .pimg{width:min(34vw,140px);aspect-ratio:2/3;border-radius:10px;object-fit:cover;flex:none;background:var(--card);display:block}
+.hero .txt{min-width:0}
+.hero h2{font-size:22px;line-height:1.2;margin:0 0 6px;overflow-wrap:anywhere}
+.links{display:flex;gap:16px;margin-top:8px}
+.links a{color:var(--ac);font-size:15px;font-weight:600;text-decoration:none}
+.sec{background:var(--card);border-radius:12px;padding:12px 14px;margin-top:16px}
+.sec .seg{margin-top:0;background:var(--card2)}
+.lbl{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:15px;color:var(--mu);min-height:36px}
+.lbl b{color:var(--tx);font-weight:600}
+.stars{display:flex;justify-content:space-between;margin-top:4px}
+.stars button{font-size:min(28px,7.2vw);color:#3d3d48;line-height:1;padding:4px 0}
+.stars button:active{opacity:1;transform:scale(1.2)}
 .stars button.on{color:var(--ac)}
-.ov{font-size:14px;color:#c9c9d3;margin-top:16px}
-.btn{display:block;width:100%;text-align:center;padding:12px;border-radius:10px;background:var(--ac);color:#000;font-weight:600;margin-top:10px}
-.btn.sec{background:var(--card2);color:var(--tx)}
-.danger{display:block;width:100%;padding:12px;margin-top:20px;border-radius:10px;background:rgba(255,69,58,.12);color:var(--red);font-weight:600}
-.toast{position:fixed;left:50%;bottom:calc(100px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#2c2c36;padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:.25s;z-index:20;pointer-events:none;max-width:90vw}
-.toast.on{opacity:1;transform:translateX(-50%)}
+input[type=date]{width:auto;min-width:140px;min-height:36px;background:var(--card2);font-size:16px;text-align:right}
+textarea{background:transparent;padding:6px 0 0;resize:none;min-height:84px;border-radius:0}
+.ov{font-size:15px;line-height:1.45;color:#c9c9d3;margin:0;overflow-wrap:anywhere}
+.btn{display:block;width:100%;text-align:center;padding:13px;border-radius:12px;background:var(--ac);color:#000;font-weight:600;margin-top:10px}
+.btn.sec2{background:var(--card);color:var(--tx)}
+.danger{display:block;width:100%;padding:13px;margin-top:20px;border-radius:12px;background:var(--card);color:var(--red);font-weight:500}
+h3{font-size:13px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin:26px 4px 6px}
+
+.toast{position:fixed;left:50%;bottom:calc(var(--sb) + 24px);transform:translate(-50%,20px);background:#2c2c36;padding:10px 16px;border-radius:14px;
+  font-size:15px;opacity:0;transition:.25s;z-index:20;pointer-events:none;max-width:calc(100vw - 40px);text-align:center;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
 <body>
-<header>
-  <div class="top"><h1>Mis Pelis</h1><button class="ico" id="btnSet" aria-label="Ajustes">⚙️</button></div>
-  <div class="bar">
-    <input id="q" type="search" placeholder="Filtrar mi lista…" autocomplete="off">
-    <select id="sort" aria-label="Ordenar">
-      <option value="added">Recientes</option>
-      <option value="title">Título</option>
-      <option value="year">Año</option>
-      <option value="rating">Mi nota</option>
-    </select>
-  </div>
-  <div class="tabs" id="tabs">
-    <button class="tab on" data-f="all">Todas<b>0</b></button>
-    <button class="tab" data-f="no_vista">No vistas<b>0</b></button>
-    <button class="tab" data-f="en_curso">En curso<b>0</b></button>
-    <button class="tab" data-f="vista">Vistas<b>0</b></button>
-  </div>
-</header>
-
-<main class="grid" id="grid"></main>
-<div class="empty" id="empty" hidden></div>
-
-<button class="fab" id="btnAdd" aria-label="Añadir película">+</button>
-<div class="ov-bg" id="ovbg"></div>
-<div class="sheet" id="sheet"><div class="shead"><div class="grab"></div><button class="close" id="btnClose" aria-label="Cerrar">✕</button></div><div id="sbody"></div></div>
+<div id="app"></div>
 <div class="toast" id="toast"></div>
 
 <script>
 const $ = s => document.querySelector(s);
-const LS = 'pelis.v1', LSK = 'pelis.tmdbKey';
+const LS = 'pelis.v1', LSK = 'pelis.tmdbKey', VERSION = 4;
 const STATUS = { no_vista: 'No vista', en_curso: 'En curso', vista: 'Vista' };
+const TABS = { all: 'Todas', no_vista: 'No vistas', en_curso: 'En curso', vista: 'Vistas' };
+const ICON_BACK = '<svg width="12" height="20" viewBox="0 0 12 20"><path d="M10 2 2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ICON_PLUS = '<svg width="17" height="17" viewBox="0 0 17 17"><path d="M8.5 2v13M2 8.5h13" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
 let movies = load(), filter = 'all', sort = 'added', query = '';
 
 function load() { try { return JSON.parse(localStorage.getItem(LS)) || []; } catch { return []; } }
@@ -124,35 +135,136 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const img = (p, size = 'w342') => p ? `https://image.tmdb.org/t/p/${size}${p}` : '';
 const today = () => new Date().toISOString().slice(0, 10);
+const hasKey = () => !!(localStorage.getItem(LSK) || '').trim();
 
 function toast(msg) {
   const t = $('#toast'); t.textContent = msg; t.classList.add('on');
   clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2200);
 }
 
-// ---------- TMDb ----------
+// ================= TMDb =================
 async function tmdb(path, params = {}) {
   const key = (localStorage.getItem(LSK) || '').trim();
-  if (!key) throw new Error('Falta la API key de TMDb (⚙️ Ajustes)');
+  if (!key) throw new Error('Falta la API key de TMDb (Ajustes)');
   const url = new URL('https://api.themoviedb.org/3' + path);
   url.searchParams.set('language', 'es-ES');
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
   const headers = { accept: 'application/json' };
-  if (key.length > 40) headers.Authorization = 'Bearer ' + key;   // token de lectura v4
-  else url.searchParams.set('api_key', key);                      // api key v3
+  if (key.length > 40) headers.Authorization = 'Bearer ' + key; else url.searchParams.set('api_key', key);
   const r = await fetch(url, { headers });
   if (r.status === 401) throw new Error('API key no válida');
   if (!r.ok) throw new Error('Error TMDb ' + r.status);
   return r.json();
 }
 
-// ---------- Lista ----------
+// ================= Navegación por pantallas =================
+const app = $('#app'), stack = [];
+function screen(html) { const s = document.createElement('section'); s.className = 'screen'; s.innerHTML = html; return s; }
+const navBar = (title, back = 'Mis Pelis', right = '') =>
+  `<div class="navrow"><button class="back" data-back>${ICON_BACK}<span>${esc(back)}</span></button><div class="ttl">${esc(title)}</div><div class="navr">${right}</div></div>`;
+
+function push(s) {
+  const prev = stack.at(-1);
+  document.activeElement?.blur();
+  s.classList.add('right'); app.appendChild(s); stack.push(s);
+  s.offsetWidth; // fuerza el layout para que la transición arranque
+  s.classList.remove('right'); prev?.classList.add('under');
+}
+function pop() {
+  if (stack.length < 2) return;
+  document.activeElement?.blur();
+  const s = stack.pop(), prev = stack.at(-1);
+  [s, prev].forEach(x => { x.classList.remove('drag'); x.style.transform = ''; x.style.filter = ''; });
+  s.classList.add('right'); prev.classList.remove('under');
+  setTimeout(() => s.remove(), 450);
+}
+app.addEventListener('click', e => { if (e.target.closest('[data-back]')) pop(); });
+
+// Deslizar desde el borde izquierdo para volver
+let sw = null;
+app.addEventListener('touchstart', e => {
+  if (stack.length < 2 || e.touches.length > 1) return;
+  const t = e.touches[0];
+  if (t.clientX > 30) return;
+  sw = { x0: t.clientX, y0: t.clientY, dx: 0, on: false, lx: t.clientX, lt: e.timeStamp, v: 0 };
+}, { passive: true });
+app.addEventListener('touchmove', e => {
+  if (!sw) return;
+  const t = e.touches[0], dx = t.clientX - sw.x0, dy = t.clientY - sw.y0;
+  if (!sw.on) {
+    if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { sw = null; return; }
+    if (dx < 6) return;
+    sw.on = true; document.activeElement?.blur();
+    stack.at(-1).classList.add('drag'); stack.at(-2).classList.add('drag');
+  }
+  e.preventDefault();
+  const W = app.clientWidth, top = stack.at(-1), prev = stack.at(-2);
+  sw.dx = Math.max(0, Math.min(W, dx));
+  sw.v = (t.clientX - sw.lx) / Math.max(1, e.timeStamp - sw.lt); sw.lx = t.clientX; sw.lt = e.timeStamp;
+  const p = sw.dx / W;
+  top.style.transform = `translateX(${sw.dx}px)`;
+  prev.style.transform = `translateX(${-28 * (1 - p)}%)`;
+  prev.style.filter = `brightness(${0.55 + 0.45 * p})`;
+}, { passive: false });
+function endSwipe() {
+  if (!sw) return;
+  const s = sw; sw = null;
+  if (!s.on) return;
+  if (s.dx > app.clientWidth * 0.35 || s.v > 0.35) return pop();
+  const top = stack.at(-1), prev = stack.at(-2);
+  [top, prev].forEach(x => { x.classList.remove('drag'); x.style.transform = ''; x.style.filter = ''; });
+}
+app.addEventListener('touchend', endSwipe);
+app.addEventListener('touchcancel', endSwipe);
+
+// Teclado de iOS: la app ocupa exactamente la zona visible encima del teclado
+const vv = window.visualViewport;
+function fit() {
+  if (!vv) return;
+  app.style.top = vv.offsetTop + 'px';
+  app.style.height = vv.height + 'px';
+  document.body.classList.toggle('kb', innerHeight - vv.height > 120);
+}
+vv?.addEventListener('resize', fit);
+vv?.addEventListener('scroll', fit);
+function reveal(el) {
+  const sc = el.closest('.scroll'); if (!sc) return;
+  const r = el.getBoundingClientRect(), c = sc.getBoundingClientRect();
+  if (r.bottom > c.bottom - 12) sc.scrollTop += r.bottom - c.bottom + 12;
+  else if (r.top < c.top + 12) sc.scrollTop -= c.top + 12 - r.top;
+}
+document.addEventListener('focusin', e => setTimeout(() => { fit(); reveal(e.target); }, 350));
+document.addEventListener('focusout', () => setTimeout(() => { if (!document.activeElement || document.activeElement === document.body) { window.scrollTo(0, 0); fit(); } }, 80));
+app.addEventListener('scroll', () => { app.scrollTop = 0; app.scrollLeft = 0; });
+document.addEventListener('gesturestart', e => e.preventDefault()); // sin zoom con pellizco
+
+// ================= Pantalla principal =================
+const home = screen(`
+  <header class="nav">
+    <div class="big"><h1>Mis Pelis</h1>
+      <div class="navr" style="padding:0">
+        <button class="ibtn" id="bSet" aria-label="Ajustes">⚙&#xFE0E;</button>
+        <button class="ibtn" id="bAdd" aria-label="Añadir">${ICON_PLUS}</button>
+      </div>
+    </div>
+    <div class="frow">
+      <input id="q" type="search" placeholder="Buscar en mi lista" autocomplete="off" autocorrect="off" enterkeyhint="done">
+      <select id="sort" aria-label="Ordenar">
+        <option value="added">Recientes</option><option value="title">Título</option>
+        <option value="year">Año</option><option value="rating">Mi nota</option>
+      </select>
+    </div>
+    <div class="seg" id="tabs">${Object.entries(TABS).map(([k, v]) => `<button data-f="${k}">${v}<small>0</small></button>`).join('')}</div>
+  </header>
+  <div class="scroll"><div class="grid" id="grid"></div><div class="empty" id="empty" hidden></div></div>`);
+app.appendChild(home); stack.push(home);
+
 function render() {
   const counts = { all: movies.length, no_vista: 0, en_curso: 0, vista: 0 };
   movies.forEach(m => counts[m.status]++);
-  document.querySelectorAll('.tab').forEach(t => {
-    t.classList.toggle('on', t.dataset.f === filter);
-    t.querySelector('b').textContent = counts[t.dataset.f];
+  home.querySelectorAll('#tabs button').forEach(b => {
+    b.classList.toggle('on', b.dataset.f === filter);
+    b.querySelector('small').textContent = counts[b.dataset.f];
   });
   const q = norm(query);
   const cmp = {
@@ -177,175 +289,170 @@ function render() {
   const empty = $('#empty');
   empty.hidden = list.length > 0;
   if (!list.length) {
-    empty.innerHTML = !localStorage.getItem(LSK)
-      ? 'Primero pon tu API key de TMDb en ⚙️ Ajustes.<br><br>Luego pulsa <b>+</b> para añadir películas.'
-      : movies.length ? 'Nada por aquí con este filtro.' : 'Tu lista está vacía.<br>Pulsa <b>+</b> para añadir películas.';
+    empty.innerHTML = !hasKey()
+      ? 'Para buscar películas necesitas una API key gratuita de TMDb.<button class="btn" data-go="set">Poner API key</button>'
+      : movies.length ? 'No hay películas con este filtro.'
+      : 'Tu lista está vacía.<button class="btn" data-go="add">Añadir película</button>';
   }
 }
+home.querySelector('#tabs').onclick = e => { const b = e.target.closest('button'); if (b) { filter = b.dataset.f; render(); } };
+home.querySelector('#q').oninput = e => { query = e.target.value; render(); };
+home.querySelector('#q').onkeydown = e => { if (e.key === 'Enter') e.target.blur(); };
+home.querySelector('#sort').onchange = e => { sort = e.target.value; render(); };
+home.querySelector('#grid').onclick = e => { const c = e.target.closest('.card'); if (c) openDetail(+c.dataset.id); };
+home.querySelector('#bAdd').onclick = openAdd;
+home.querySelector('#bSet').onclick = openSettings;
+home.querySelector('#empty').onclick = e => { const g = e.target.closest('[data-go]')?.dataset.go; if (g === 'add') openAdd(); if (g === 'set') openSettings(); };
+home.querySelector('.scroll').addEventListener('touchstart', () => { if (document.activeElement?.id === 'q') document.activeElement.blur(); }, { passive: true });
 
-// ---------- Hoja inferior ----------
-// En iOS el teclado desplaza la página: bloqueamos el scroll de fondo y
-// colocamos la hoja justo encima del teclado usando visualViewport.
-let lockY = 0;
-const vv = window.visualViewport;
-function fitSheet() {
-  if (!vv) return;
-  document.documentElement.style.setProperty('--vh', vv.height + 'px');
-  $('#sheet').style.bottom = Math.max(0, innerHeight - vv.height - vv.offsetTop) + 'px';
-}
-vv?.addEventListener('resize', fitSheet);
-vv?.addEventListener('scroll', fitSheet);
-document.addEventListener('focusout', () => setTimeout(() => {
-  if (document.body.classList.contains('locked')) window.scrollTo(0, 0);
-  fitSheet();
-}, 60));
-
-function openSheet(html) {
-  $('#sbody').innerHTML = html;
-  $('#sbody').scrollTop = 0;
-  if (!document.body.classList.contains('locked')) {
-    lockY = scrollY;
-    document.body.style.top = -lockY + 'px';
-    document.body.classList.add('locked');
-  }
-  fitSheet();
-  $('#sheet').classList.add('on'); $('#ovbg').classList.add('on');
-}
-function closeSheet() {
-  document.activeElement?.blur();
-  $('#sheet').classList.remove('on'); $('#ovbg').classList.remove('on');
-  if (document.body.classList.contains('locked')) {
-    document.body.classList.remove('locked');
-    document.body.style.top = '';
-    window.scrollTo(0, lockY);
-  }
-}
-
-// ---------- Añadir ----------
-let searchSeq = 0, searchT;
+// ================= Añadir película =================
 function openAdd() {
-  openSheet(`<div class="stick"><h2>Añadir película</h2>
-    <input id="sq" type="search" placeholder="Buscar en TMDb…" autocomplete="off" enterkeyhint="search"></div>
-    <div class="res" id="res"></div>`);
-  const sq = $('#sq');
-  setTimeout(() => sq.focus(), 300);
-  sq.oninput = () => { clearTimeout(searchT); searchT = setTimeout(() => search(sq.value.trim()), 350); };
-  sq.onkeydown = e => { if (e.key === 'Enter') sq.blur(); };              // "Buscar" cierra el teclado
-  $('#res').addEventListener('touchstart', () => sq.blur(), { passive: true }); // al tocar resultados también
-  $('#res').onclick = e => { const b = e.target.closest('.add'); if (b) addMovie(+b.dataset.id, b); };
-}
-async function search(text) {
-  const res = $('#res'); if (!res) return;
-  if (!text) { res.innerHTML = ''; return; }
-  const seq = ++searchSeq;
-  res.innerHTML = '<p class="muted">Buscando…</p>';
-  try {
-    const d = await tmdb('/search/movie', { query: text, include_adult: 'false' });
-    if (seq !== searchSeq) return;
-    res.innerHTML = d.results.length ? d.results.map(r => {
+  const s = screen(`
+    <header class="nav">${navBar('Añadir película')}
+      <input class="sq" type="search" placeholder="Título de la película" autocomplete="off" autocorrect="off" enterkeyhint="search" style="margin-top:6px">
+    </header>
+    <div class="scroll"><div class="res"><p class="muted small pad">Escribe el título (en español o en original).</p></div></div>`);
+  push(s);
+  const sq = s.querySelector('.sq'), res = s.querySelector('.res');
+  sq.focus({ preventScroll: true });
+  let seq = 0, timer, lastResults = [];
+  const paint = () => {
+    res.innerHTML = lastResults.length ? lastResults.map(r => {
       const have = movies.some(m => m.id === r.id);
       const year = (r.release_date || '').slice(0, 4);
-      const orig = r.original_title && r.original_title !== r.title ? ' · ' + esc(r.original_title) : '';
-      return `<div class="row">
+      const orig = r.original_title && r.original_title !== r.title ? (year ? ' · ' : '') + esc(r.original_title) : '';
+      return `<button class="row" data-id="${r.id}">
         ${r.poster_path ? `<img class="th" loading="lazy" src="${img(r.poster_path, 'w92')}" alt="">` : '<div class="th"></div>'}
         <div class="info"><b>${esc(r.title)}</b><span>${year}${orig}</span></div>
-        <button class="add" data-id="${r.id}" ${have ? 'disabled' : ''}>${have ? '✓' : '+'}</button>
-      </div>`;
-    }).join('') : '<p class="muted">Sin resultados</p>';
-  } catch (e) { if (seq === searchSeq) res.innerHTML = `<p class="muted">${esc(e.message)}</p>`; }
+        <span class="add ${have ? 'have' : ''}">${have ? '✓' : '+'}</span>
+      </button>`;
+    }).join('') : '<p class="muted small pad">Sin resultados.</p>';
+  };
+  async function search(text) {
+    if (!text) { res.innerHTML = ''; return; }
+    const my = ++seq;
+    try {
+      const d = await tmdb('/search/movie', { query: text, include_adult: 'false' });
+      if (my !== seq) return;
+      lastResults = d.results; paint();
+    } catch (e) { if (my === seq) res.innerHTML = `<p class="muted small pad">${esc(e.message)}</p>`; }
+  }
+  sq.oninput = () => { clearTimeout(timer); timer = setTimeout(() => search(sq.value.trim()), 350); };
+  sq.onkeydown = e => { if (e.key === 'Enter') sq.blur(); };
+  s.querySelector('.scroll').addEventListener('touchstart', () => sq.blur(), { passive: true });
+  res.onclick = async e => {
+    const row = e.target.closest('.row'); if (!row) return;
+    const id = +row.dataset.id;
+    if (movies.some(m => m.id === id)) return openDetail(id, 'Añadir');
+    const badge = row.querySelector('.add'); if (badge.textContent === '…') return;
+    badge.textContent = '…';
+    try { const m = await addMovie(id); paint(); toast('Añadida: ' + m.title); }
+    catch (err) { badge.textContent = '+'; toast(err.message); }
+  };
 }
-async function addMovie(id, btn) {
-  if (movies.some(m => m.id === id)) return;
-  btn.disabled = true; btn.textContent = '…';
-  try {
-    const d = await tmdb('/movie/' + id, { append_to_response: 'external_ids' });
-    movies.push({
-      id: d.id,
-      imdb_id: d.imdb_id || d.external_ids?.imdb_id || null,
-      title: d.title, original_title: d.original_title,
-      year: +(d.release_date || '').slice(0, 4) || null,
-      poster: d.poster_path || null,
-      genres: (d.genres || []).map(g => g.name),
-      runtime: d.runtime || null,
-      overview: d.overview || '',
-      tmdb_vote: d.vote_average ? Math.round(d.vote_average * 10) / 10 : null,
-      status: 'no_vista', rating: null, notes: '', watched: null, added: Date.now(),
-    });
-    save(); render();
-    btn.textContent = '✓'; toast('Añadida: ' + d.title);
-  } catch (e) { btn.disabled = false; btn.textContent = '+'; toast(e.message); }
+async function addMovie(id) {
+  const d = await tmdb('/movie/' + id, { append_to_response: 'external_ids' });
+  const m = {
+    id: d.id,
+    imdb_id: d.imdb_id || d.external_ids?.imdb_id || null,
+    title: d.title, original_title: d.original_title,
+    year: +(d.release_date || '').slice(0, 4) || null,
+    poster: d.poster_path || null,
+    genres: (d.genres || []).map(g => g.name),
+    runtime: d.runtime || null,
+    overview: d.overview || '',
+    tmdb_vote: d.vote_average ? Math.round(d.vote_average * 10) / 10 : null,
+    status: 'no_vista', rating: null, notes: '', watched: null, added: Date.now(),
+  };
+  if (!movies.some(x => x.id === m.id)) { movies.push(m); save(); render(); }
+  return m;
 }
 
-// ---------- Detalle ----------
-function openDetail(id) {
+// ================= Detalle =================
+function openDetail(id, backLabel = 'Mis Pelis') {
   const m = movies.find(x => x.id === id); if (!m) return;
   const meta = [m.year, m.runtime && m.runtime + ' min'].filter(Boolean).join(' · ');
-  openSheet(`
-    <div class="hero">
-      ${m.poster ? `<img src="${img(m.poster)}" alt="">` : ''}
-      <div>
-        <h2>${esc(m.title)}</h2>
-        ${m.original_title && m.original_title !== m.title ? `<p class="muted small">${esc(m.original_title)}</p>` : ''}
-        <p class="muted small">${meta}</p>
-        <p class="muted small">${esc(m.genres.join(', '))}</p>
-        ${m.tmdb_vote ? `<p class="small">TMDb ★ ${m.tmdb_vote}</p>` : ''}
-        <p class="links">
-          ${m.imdb_id ? `<a href="https://www.imdb.com/title/${m.imdb_id}/" target="_blank" rel="noopener">IMDb ↗</a>` : ''}
-          <a href="https://www.themoviedb.org/movie/${m.id}" target="_blank" rel="noopener">TMDb ↗</a>
-        </p>
+  const s = screen(`
+    <header class="nav">${navBar('', backLabel)}</header>
+    <div class="scroll">
+      <div class="hero">
+        ${m.poster ? `<img class="pimg" src="${img(m.poster)}" alt="">` : '<div class="pimg"></div>'}
+        <div class="txt">
+          <h2>${esc(m.title)}</h2>
+          ${m.original_title && m.original_title !== m.title ? `<p class="muted small">${esc(m.original_title)}</p>` : ''}
+          <p class="muted small">${meta}</p>
+          ${m.genres?.length ? `<p class="muted small">${esc(m.genres.join(', '))}</p>` : ''}
+          ${m.tmdb_vote ? `<p class="small">TMDb <span style="color:var(--ac)">★</span> ${m.tmdb_vote}</p>` : ''}
+          <div class="links">
+            ${m.imdb_id ? `<a href="https://www.imdb.com/title/${m.imdb_id}/" target="_blank" rel="noopener">IMDb ↗</a>` : ''}
+            <a href="https://www.themoviedb.org/movie/${m.id}" target="_blank" rel="noopener">TMDb ↗</a>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="seg" id="seg">${Object.entries(STATUS).map(([k, v]) => `<button data-s="${k}" class="${m.status === k ? 'on' : ''}">${v}</button>`).join('')}</div>
-    <div class="lbl">Mi nota <span id="rv">${m.rating ? m.rating + '/10' : '—'}</span></div>
-    <div class="stars" id="stars">${Array.from({ length: 10 }, (_, i) => `<button data-n="${i + 1}" class="${m.rating > i ? 'on' : ''}">★</button>`).join('')}</div>
-    <label class="lbl" id="wl" ${m.status !== 'vista' ? 'hidden' : ''}>Vista el <input type="date" id="wd" value="${m.watched || ''}"></label>
-    <div class="lbl">Notas</div>
-    <textarea id="nt" rows="3" placeholder="Comentarios, con quién la viste…">${esc(m.notes)}</textarea>
-    ${m.overview ? `<p class="ov">${esc(m.overview)}</p>` : ''}
-    <button class="danger" id="del">Eliminar de la lista</button>`);
-
-  $('#seg').onclick = e => {
+      <div class="sec">
+        <div class="seg sts">${Object.entries(STATUS).map(([k, v]) => `<button data-s="${k}" class="${m.status === k ? 'on' : ''}">${v}</button>`).join('')}</div>
+        <div class="lbl wl" ${m.status !== 'vista' ? 'hidden' : ''} style="margin-top:8px">Vista el <input type="date" class="wd" value="${m.watched || ''}"></div>
+      </div>
+      <div class="sec">
+        <div class="lbl">Mi nota <b class="rv">${m.rating ? m.rating + '/10' : '—'}</b></div>
+        <div class="stars">${Array.from({ length: 10 }, (_, i) => `<button data-n="${i + 1}" class="${m.rating > i ? 'on' : ''}" aria-label="${i + 1}">★</button>`).join('')}</div>
+      </div>
+      <div class="sec">
+        <div class="lbl">Notas</div>
+        <textarea class="nt" rows="3" placeholder="Comentarios, con quién la viste…">${esc(m.notes)}</textarea>
+      </div>
+      ${m.overview ? `<h3>Sinopsis</h3><div class="sec" style="margin-top:0"><p class="ov">${esc(m.overview)}</p></div>` : ''}
+      <button class="danger del">Eliminar de mi lista</button>
+    </div>`);
+  push(s);
+  const q = sel => s.querySelector(sel);
+  q('.sts').onclick = e => {
     const b = e.target.closest('button'); if (!b) return;
     m.status = b.dataset.s;
-    if (m.status === 'vista' && !m.watched) { m.watched = today(); $('#wd').value = m.watched; }
-    $('#wl').hidden = m.status !== 'vista';
-    $('#seg').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    if (m.status === 'vista' && !m.watched) { m.watched = today(); q('.wd').value = m.watched; }
+    q('.wl').hidden = m.status !== 'vista';
+    q('.sts').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
     save(); render();
   };
-  $('#stars').onclick = e => {
+  q('.stars').onclick = e => {
     const b = e.target.closest('button'); if (!b) return;
     const n = +b.dataset.n;
-    m.rating = m.rating === n ? null : n;   // tocar la misma estrella la quita
-    $('#stars').querySelectorAll('button').forEach((x, i) => x.classList.toggle('on', (m.rating || 0) > i));
-    $('#rv').textContent = m.rating ? m.rating + '/10' : '—';
+    m.rating = m.rating === n ? null : n; // tocar la misma estrella quita la nota
+    q('.stars').querySelectorAll('button').forEach((x, i) => x.classList.toggle('on', (m.rating || 0) > i));
+    q('.rv').textContent = m.rating ? m.rating + '/10' : '—';
+    navigator.vibrate?.(8);
     save(); render();
   };
-  $('#wd').onchange = e => { m.watched = e.target.value || null; save(); };
-  $('#nt').oninput = e => { m.notes = e.target.value; save(); };
-  $('#del').onclick = () => {
-    if (!confirm(`¿Eliminar "${m.title}"?`)) return;
-    movies = movies.filter(x => x.id !== m.id); save(); render(); closeSheet();
+  q('.wd').onchange = e => { m.watched = e.target.value || null; save(); };
+  q('.nt').oninput = e => { m.notes = e.target.value; save(); };
+  q('.del').onclick = () => {
+    if (!confirm(`¿Eliminar "${m.title}" de tu lista?`)) return;
+    movies = movies.filter(x => x.id !== m.id); save(); render(); pop();
   };
 }
 
-// ---------- Ajustes ----------
+// ================= Ajustes =================
 function openSettings() {
-  openSheet(`<h2>Ajustes</h2>
-    <div class="lbl">API key de TMDb</div>
-    <input id="key" value="${esc(localStorage.getItem(LSK) || '')}" placeholder="API key (v3) o token de lectura (v4)" autocomplete="off" autocapitalize="off" spellcheck="false">
-    <p class="muted small">Gratis en themoviedb.org → tu perfil → Ajustes → API.</p>
-    <button class="btn" id="saveKey">Guardar y probar</button>
-    <h3>Copia de seguridad</h3>
-    <button class="btn sec" id="exp">Exportar lista (JSON)</button>
-    <label class="btn sec">Importar lista<input type="file" id="imp" accept="application/json,.json" hidden></label>
-    <p class="muted small" style="margin-top:12px">${movies.length} películas guardadas en este dispositivo.</p>`);
-  $('#saveKey').onclick = async () => {
-    localStorage.setItem(LSK, $('#key').value.trim());
-    try { await tmdb('/configuration'); toast('API key correcta ✓'); render(); closeSheet(); }
+  const s = screen(`
+    <header class="nav">${navBar('Ajustes')}</header>
+    <div class="scroll">
+      <h3>TMDb</h3>
+      <input class="key" value="${esc(localStorage.getItem(LSK) || '')}" placeholder="API key (v3) o token de lectura (v4)" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <p class="muted small" style="margin:8px 4px">Gratis en themoviedb.org → tu perfil → Ajustes → API.</p>
+      <button class="btn sk">Guardar y probar</button>
+      <h3>Copia de seguridad</h3>
+      <button class="btn sec2 exp">Exportar lista</button>
+      <label class="btn sec2">Importar lista<input type="file" class="imp" accept="application/json,.json" hidden></label>
+      <p class="muted small" style="margin:16px 4px">${movies.length} películas guardadas en este iPhone · versión ${VERSION}</p>
+    </div>`);
+  push(s);
+  s.querySelector('.sk').onclick = async () => {
+    localStorage.setItem(LSK, s.querySelector('.key').value.trim());
+    try { await tmdb('/configuration'); toast('API key correcta ✓'); render(); pop(); }
     catch (e) { toast(e.message); }
   };
-  $('#exp').onclick = exportData;
-  $('#imp').onchange = e => importData(e.target.files[0]);
+  s.querySelector('.exp').onclick = exportData;
+  s.querySelector('.imp').onchange = e => importData(e.target.files[0]);
 }
 async function exportData() {
   const json = JSON.stringify({ app: 'mis-pelis', v: 1, date: new Date().toISOString(), movies }, null, 1);
@@ -367,21 +474,12 @@ async function importData(f) {
     if (!confirm(`¿Importar ${arr.length} películas? Se fusionan con tu lista (las repetidas se sobrescriben).`)) return;
     const byId = new Map(movies.map(m => [m.id, m]));
     arr.forEach(m => byId.set(m.id, { status: 'no_vista', rating: null, notes: '', genres: [], added: Date.now(), ...m }));
-    movies = [...byId.values()]; save(); render(); closeSheet(); toast('Importadas ' + arr.length);
+    movies = [...byId.values()]; save(); render(); pop(); toast('Importadas ' + arr.length);
   } catch { toast('Fichero no válido'); }
 }
 
-// ---------- Eventos ----------
-$('#tabs').onclick = e => { const t = e.target.closest('.tab'); if (t) { filter = t.dataset.f; render(); } };
-$('#q').oninput = e => { query = e.target.value; render(); };
-$('#sort').onchange = e => { sort = e.target.value; render(); };
-$('#grid').onclick = e => { const c = e.target.closest('.card'); if (c) openDetail(+c.dataset.id); };
-$('#btnAdd').onclick = openAdd;
-$('#btnSet').onclick = openSettings;
-$('#btnClose').onclick = closeSheet;
-$('#ovbg').onclick = closeSheet;
-
 render();
+fit();
 navigator.storage?.persist?.();
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js');
 </script>
