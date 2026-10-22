@@ -1,6 +1,6 @@
 // Service worker: la app funciona offline (la búsqueda en TMDb necesita conexión).
 // Network-first para los ficheros propios, así las actualizaciones llegan solas.
-const V = 'pelis-v1';
+const V = 'pelis-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

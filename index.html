@@ -44,10 +44,14 @@ h1{font-size:28px;margin:0}
 .fab{position:fixed;right:20px;bottom:calc(24px + env(safe-area-inset-bottom));width:58px;height:58px;border-radius:50%;background:var(--ac);color:#000;font-size:32px;font-weight:300;box-shadow:0 6px 20px rgba(0,0,0,.5);z-index:6}
 .ov-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .25s;z-index:10}
 .ov-bg.on{opacity:1;pointer-events:auto}
-.sheet{position:fixed;left:0;right:0;bottom:0;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#15151c;border-radius:16px 16px 0 0;padding:8px 16px calc(24px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);z-index:11;max-width:700px;margin:0 auto}
+body.locked{position:fixed;left:0;right:0;overflow:hidden}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-height:calc(var(--vh,100dvh) - env(safe-area-inset-top) - 12px);display:flex;flex-direction:column;background:#15151c;border-radius:16px 16px 0 0;transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);z-index:11;max-width:700px;margin:0 auto}
 .sheet.on{transform:none}
-.grab{width:40px;height:5px;border-radius:3px;background:#444;margin:0 auto 6px}
-.close{position:absolute;right:12px;top:10px;width:30px;height:30px;border-radius:50%;background:var(--card2);color:var(--mu)}
+.shead{position:relative;flex:none;padding:8px 16px 0;height:22px}
+#sbody{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 16px calc(24px + env(safe-area-inset-bottom))}
+.stick{position:sticky;top:0;background:#15151c;padding-bottom:4px;z-index:2}
+.grab{width:40px;height:5px;border-radius:3px;background:#444;margin:0 auto}
+.close{position:absolute;right:12px;top:8px;width:30px;height:30px;border-radius:50%;background:var(--card2);color:var(--mu);z-index:3}
 h2{font-size:20px;margin:6px 40px 10px 0}
 h3{font-size:16px;margin:22px 0 8px}
 .muted{color:var(--mu)}.small{font-size:13px;margin:2px 0}
@@ -105,7 +109,7 @@ h3{font-size:16px;margin:22px 0 8px}
 
 <button class="fab" id="btnAdd" aria-label="Añadir película">+</button>
 <div class="ov-bg" id="ovbg"></div>
-<div class="sheet" id="sheet"><div class="grab"></div><button class="close" id="btnClose">✕</button><div id="sbody"></div></div>
+<div class="sheet" id="sheet"><div class="shead"><div class="grab"></div><button class="close" id="btnClose" aria-label="Cerrar">✕</button></div><div id="sbody"></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -180,22 +184,54 @@ function render() {
 }
 
 // ---------- Hoja inferior ----------
+// En iOS el teclado desplaza la página: bloqueamos el scroll de fondo y
+// colocamos la hoja justo encima del teclado usando visualViewport.
+let lockY = 0;
+const vv = window.visualViewport;
+function fitSheet() {
+  if (!vv) return;
+  document.documentElement.style.setProperty('--vh', vv.height + 'px');
+  $('#sheet').style.bottom = Math.max(0, innerHeight - vv.height - vv.offsetTop) + 'px';
+}
+vv?.addEventListener('resize', fitSheet);
+vv?.addEventListener('scroll', fitSheet);
+document.addEventListener('focusout', () => setTimeout(() => {
+  if (document.body.classList.contains('locked')) window.scrollTo(0, 0);
+  fitSheet();
+}, 60));
+
 function openSheet(html) {
   $('#sbody').innerHTML = html;
-  $('#sheet').scrollTop = 0;
+  $('#sbody').scrollTop = 0;
+  if (!document.body.classList.contains('locked')) {
+    lockY = scrollY;
+    document.body.style.top = -lockY + 'px';
+    document.body.classList.add('locked');
+  }
+  fitSheet();
   $('#sheet').classList.add('on'); $('#ovbg').classList.add('on');
 }
-function closeSheet() { $('#sheet').classList.remove('on'); $('#ovbg').classList.remove('on'); }
+function closeSheet() {
+  document.activeElement?.blur();
+  $('#sheet').classList.remove('on'); $('#ovbg').classList.remove('on');
+  if (document.body.classList.contains('locked')) {
+    document.body.classList.remove('locked');
+    document.body.style.top = '';
+    window.scrollTo(0, lockY);
+  }
+}
 
 // ---------- Añadir ----------
 let searchSeq = 0, searchT;
 function openAdd() {
-  openSheet(`<h2>Añadir película</h2>
-    <input id="sq" type="search" placeholder="Buscar en TMDb…" autocomplete="off" enterkeyhint="search">
+  openSheet(`<div class="stick"><h2>Añadir película</h2>
+    <input id="sq" type="search" placeholder="Buscar en TMDb…" autocomplete="off" enterkeyhint="search"></div>
     <div class="res" id="res"></div>`);
   const sq = $('#sq');
   setTimeout(() => sq.focus(), 300);
   sq.oninput = () => { clearTimeout(searchT); searchT = setTimeout(() => search(sq.value.trim()), 350); };
+  sq.onkeydown = e => { if (e.key === 'Enter') sq.blur(); };              // "Buscar" cierra el teclado
+  $('#res').addEventListener('touchstart', () => sq.blur(), { passive: true }); // al tocar resultados también
   $('#res').onclick = e => { const b = e.target.closest('.add'); if (b) addMovie(+b.dataset.id, b); };
 }
 async function search(text) {
